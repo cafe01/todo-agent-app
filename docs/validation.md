@@ -13,7 +13,9 @@ Candidate: 0.1.0, 29 October 2026. This file distinguishes the application/packa
 
 ## Host and release validation
 
-Fresh Codex CLI read-only smoke test and GitHub CI results will be recorded after completion. CLI requires approval policy for a newly installed plugin; Café authorized app_open and tasks_list only for the test invocation, with no persistent policy change.
+A fresh Codex CLI 0.162.1 session read the installed skill and successfully called both app_open and tasks_list (zero tasks in the new default profile). Only these two tools received temporary per-invocation approval, explicitly authorized by Café; no persistent policy changed. The executable was loaded from the Codex plugin cache, not launched through shell by the agent.
+
+GitHub Actions [run 40895396551](https://github.com/cafe01/todo-agent-app/actions/runs/40895396551) passed on both macOS arm64 and Ubuntu Linux x64: backend tests, frontend tests, native packaging and the full relocated MCP/browser E2E. Each platform uploaded its archive, checksum and screenshots.
 
 ## Reproduce
 
@@ -24,6 +26,8 @@ python3 scripts/build.py
 cd web
 TODO_APP_BINARY="/absolute/path/to/marketplace/plugins/todo-agent-app/bin/todo_agent_app" npm run test:e2e
 ```
+
+The optional `scripts/smoke-codex.py --approve-read-tools --plugin-root /path/returned/by/plugin-install` reproduces the fresh harness check, consumes a model invocation, and reports only tool statuses (no credential-bearing URL).
 
 Playwright needs its test browser (`npx playwright install chromium`) on the developer/CI machine only. Screenshots are emitted to `web/test-results/`. Each E2E test uses an isolated temporary profile and removes it afterward.
 

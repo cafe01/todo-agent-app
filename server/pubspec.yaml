@@ -1,6 +1,6 @@
 name: todo_agent_app
 description: Local durable task app backend and MCP bridge.
-version: 0.1.0
+version: 0.1.1
 publish_to: none
 executables:
   todo-agent-app: todo_agent_app

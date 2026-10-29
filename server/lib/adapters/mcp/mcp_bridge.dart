@@ -14,7 +14,7 @@ Future<void> runMcp(DaemonManager manager) async {
 /// Creates the MCP server so SDK clients can exercise the tools in-process.
 mcp.McpServer createMcpServer(DaemonManager manager) {
   final server = mcp.McpServer(
-    const mcp.Implementation(name: 'todo-agent-app', version: '0.1.0'),
+    const mcp.Implementation(name: 'todo-agent-app', version: '0.1.1'),
     options: const mcp.McpServerOptions(
       capabilities: mcp.ServerCapabilities(tools: mcp.ServerCapabilitiesTools()),
     ),

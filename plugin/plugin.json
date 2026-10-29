@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "todo-agent-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A local task application shared by you and your agent, with a live web interface.",
   "author": {
     "name": "Caf\u00e9"

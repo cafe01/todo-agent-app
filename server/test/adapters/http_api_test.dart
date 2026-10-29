@@ -41,7 +41,7 @@ void main() {
     test('health is public and authenticated CRUD shares task state', () async {
       final health = await _request(client, server, 'GET', '/health');
       expect(health.statusCode, 200);
-      expect(jsonDecode(health.body), {'app': 'todo-agent-app', 'version': '0.1.0'});
+      expect(jsonDecode(health.body), {'app': 'todo-agent-app', 'version': appVersion});
 
       final unauthorized = await _request(client, server, 'GET', '/api/tasks');
       expect(unauthorized.statusCode, 401);

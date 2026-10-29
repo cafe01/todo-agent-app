@@ -1,6 +1,6 @@
 # Experiment validation
 
-Candidate: 0.1.0, 29 October 2026. This file distinguishes the application/package proof from the Codex host and distribution proof.
+Candidate: 0.1.1, 29 October 2026. Version 0.1.1 fixes the lifecycle test harness to launch a precompiled executable, avoiding concurrent Dart native-hook preparation on macOS; application behavior is unchanged. This file distinguishes the application/package proof from the Codex host and distribution proof.
 
 ## Passed locally (macOS arm64)
 

@@ -10,9 +10,20 @@ void main() {
     File('${web.path}/index.html').writeAsStringSync('<html>app</html>');
     final dataPath = '${directory.path}/data';
     final cliFile = '${Directory.current.path}/bin/todo_agent_app.dart';
+    final buildOutput = '${directory.path}/compiled';
+    final build = await Process.run('dart', [
+      'build',
+      'cli',
+      '--target',
+      cliFile,
+      '--output',
+      buildOutput,
+    ], workingDirectory: Directory.current.path);
+    expect(build.exitCode, 0, reason: '${build.stderr}\n${build.stdout}');
+    final executable = '$buildOutput/bundle/bin/todo_agent_app';
 
     Future<ProcessResult> launchUrl() =>
-        Process.run('dart', ['run', cliFile, 'url', '--data', dataPath, '--web', web.path]);
+        Process.run(executable, ['url', '--data', dataPath, '--web', web.path]);
 
     Uri resultUrl(ProcessResult result) {
       expect(result.exitCode, 0, reason: '${result.stderr}\n${result.stdout}');
@@ -26,15 +37,7 @@ void main() {
     Future<Uri> url() async => resultUrl(await launchUrl());
 
     Future<void> stop() async {
-      final result = await Process.run('dart', [
-        'run',
-        cliFile,
-        'stop',
-        '--data',
-        dataPath,
-        '--web',
-        web.path,
-      ]);
+      final result = await Process.run(executable, ['stop', '--data', dataPath, '--web', web.path]);
       expect(result.exitCode, 0, reason: '${result.stderr}\n${result.stdout}');
     }
 
@@ -45,20 +48,23 @@ void main() {
 
       // A second explicit server process waits on the same OS lock and cannot
       // create a second listener or open another SQLite owner.
-      final secondServer = await Process.start('dart', [
-        'run',
-        cliFile,
+      final secondServer = await Process.start(executable, [
         'serve',
         '--data',
         dataPath,
         '--web',
         web.path,
       ]);
-      secondServer.stdout.listen((_) {});
-      secondServer.stderr.listen((_) {});
+      final secondOutput = StringBuffer();
+      secondServer.stdout.transform(utf8.decoder).listen(secondOutput.write);
+      secondServer.stderr.transform(utf8.decoder).listen(secondOutput.write);
       await Future<void>.delayed(const Duration(milliseconds: 500));
-      expect(secondServer.kill(ProcessSignal.sigkill), isTrue);
-      await secondServer.exitCode;
+      final secondState = await Future.any<Object>([
+        secondServer.exitCode,
+        Future<void>.delayed(const Duration(milliseconds: 1)).then((_) => 'still running'),
+      ]);
+      expect(secondState, 1, reason: secondOutput.toString());
+      expect(secondOutput.toString(), contains('lock failed'));
 
       final token = Uri.splitQueryString(firstUrl.fragment)['token']!;
       final client = HttpClient();
@@ -108,6 +114,7 @@ void main() {
       }
       await stop();
     } finally {
+      await Process.run(executable, ['stop', '--data', dataPath, '--web', web.path]);
       await directory.delete(recursive: true);
     }
   }, timeout: const Timeout(Duration(minutes: 1)));

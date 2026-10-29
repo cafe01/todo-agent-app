@@ -9,7 +9,7 @@ import '../../domain/app_error.dart';
 import '../../domain/task.dart';
 
 const appIdentity = 'todo-agent-app';
-const appVersion = '0.1.0';
+const appVersion = '0.1.1';
 
 /// Builds the Dart Frog handler for the app's authenticated local API and web UI.
 class HttpApi {

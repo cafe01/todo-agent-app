@@ -26,7 +26,7 @@ The output is a relocatable marketplace archive in `dist/`, containing the nativ
 
 ## Install the compiled plugin
 
-Download and verify the appropriate release archive and its SHA-256 sidecar, then extract it to a durable folder. From a development checkout you can also use the built folder directly:
+Download and verify the appropriate [release archive](https://github.com/cafe01/todo-agent-app/releases/latest) and its SHA-256 sidecar, then extract it to a durable folder. From a development checkout you can also use the built folder directly:
 
 ```sh
 scripts/install-local.sh /absolute/path/to/todo-agent-app-0.1.1-macos-arm64

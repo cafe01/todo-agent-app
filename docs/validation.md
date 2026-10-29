@@ -17,6 +17,8 @@ A fresh Codex CLI 0.162.1 session read the installed skill and successfully call
 
 GitHub Actions [run 40895396551](https://github.com/cafe01/todo-agent-app/actions/runs/40895396551) passed on both macOS arm64 and Ubuntu Linux x64: backend tests, frontend tests, native packaging and the full relocated MCP/browser E2E. Each platform uploaded its archive, checksum and screenshots.
 
+Release [v0.1.1](https://github.com/cafe01/todo-agent-app/releases/tag/v0.1.1) was published automatically by [run 40896928482](https://github.com/cafe01/todo-agent-app/actions/runs/40896928482), after all checks and relocated-package E2E passed on both platforms. The installed 0.1.1 plugin also passed the fresh Codex smoke script.
+
 ## Reproduce
 
 ```sh
